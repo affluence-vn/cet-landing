@@ -224,6 +224,38 @@
   #thankyou .big { font-size: 2.4rem; }
   #thankyou h3 { color: var(--charcoal); text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 6px; }
 
+  /* ---------- Partnership band ---------- */
+  .partner {
+    background: #fff; border-top: 1px solid #e3ebf5;
+    padding: 44px 20px; text-align: center;
+  }
+  .partner-label {
+    font-size: .8rem; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 22px;
+  }
+  .partner-logos { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .partner-cet {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--navy); color: #fff;
+    display: grid; place-items: center;
+    font-weight: 800; letter-spacing: 1px; font-size: .95rem;
+  }
+  .partner-x { color: #b9c6d8; font-size: 22px; font-weight: 300; }
+  .partner-aff { display: flex; align-items: center; gap: 10px; }
+  .partner-aff img { width: 46px; height: 46px; object-fit: contain; }
+  .partner-aff b {
+    font-size: 22px; font-weight: 700; letter-spacing: -.3px;
+    background: linear-gradient(90deg, #4f46e5, #9333ea);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .partner-desc {
+    max-width: 640px; margin: 20px auto 0;
+    font-size: .9rem; color: var(--muted); line-height: 1.7;
+  }
+  .partner-desc a { color: #6d28d9; font-weight: 700; text-decoration: none; }
+  .partner-desc a:hover { text-decoration: underline; }
+
   /* ---------- Contact / footer ---------- */
   footer {
     background: #101a44; color: #c9d4ea;
@@ -493,6 +525,20 @@
       </div>
     </div>
   </div>
+</section>
+
+<!-- ============ PARTNERSHIP ============ -->
+<section class="partner">
+  <p class="partner-label">Đối tác chiến lược</p>
+  <div class="partner-logos">
+    <span class="partner-cet">CET</span>
+    <span class="partner-x">✕</span>
+    <span class="partner-aff">
+      <img src="affluence-logo.png" alt="Affluence">
+      <b>Affluence</b>
+    </span>
+  </div>
+  <p class="partner-desc">Trung tâm Ngoại ngữ Kiến Tạo (CET) hợp tác cùng <a href="https://affluence.vn" target="_blank" rel="noopener">Affluence</a> — nền tảng kết nối trường học &amp; mạng lưới marketers — nhằm mang chương trình học chất lượng đến gần hơn với phụ huynh và học viên.</p>
 </section>
 
 <!-- ============ FOOTER / CONTACT ============ -->
