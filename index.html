@@ -340,6 +340,15 @@
     .zalo-float { right: 14px; bottom: 14px; }
   }
 </style>
+
+<!-- Google Analytics — chung cho mọi landing page affluence.vn -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTR9CTWS2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PGTR9CTWS2');
+</script>
 </head>
 <body>
 
@@ -413,12 +422,28 @@
           </select>
         </div>
         <div class="field">
+          <label for="khuvuc">Khu vực của phụ huynh</label>
+          <input type="text" id="khuvuc" name="khu_vuc" list="khuvuc-goiy" placeholder="Ví dụ: Gò Vấp, Quận 12, Hóc Môn...">
+          <datalist id="khuvuc-goiy">
+            <option value="Gò Vấp"></option>
+            <option value="Quận 12"></option>
+            <option value="Bình Thạnh"></option>
+            <option value="Phú Nhuận"></option>
+            <option value="Tân Bình"></option>
+            <option value="Hóc Môn"></option>
+            <option value="Thủ Đức"></option>
+            <option value="Bình Dương"></option>
+          </datalist>
+          <div class="hint">Để CET tư vấn địa điểm học thuận tiện nhất cho bạn.</div>
+        </div>
+        <input type="hidden" name="lead_id" value="">
+        <div class="field">
           <label for="msg">Lời nhắn</label>
           <textarea id="msg" name="loi_nhan" rows="4" placeholder="Mục tiêu điểm số, thời gian dự thi, câu hỏi cho CET..."></textarea>
         </div>
         <div class="consent">
           <input type="checkbox" id="agree" required>
-          <label for="agree" style="font-weight:400; text-transform:none; letter-spacing:0; font-size:.88rem;">Tôi đã đọc và hiểu chính sách bảo mật, đồng ý để CET liên hệ tư vấn qua Email hoặc Zalo.</label>
+          <label for="agree" style="font-weight:400; text-transform:none; letter-spacing:0; font-size:.88rem;">Tôi đã đọc và hiểu chính sách bảo mật, đồng ý để CET liên hệ tư vấn qua Email hoặc Zalo và sử dụng cookie phân tích để cải thiện dịch vụ.</label>
         </div>
         <button class="btn" type="submit">Gửi đăng ký</button>
         <p style="text-align:center; margin-top:14px; font-size:.88rem; color:var(--muted);">
@@ -655,21 +680,51 @@
       return;
     }
 
+    const leadId = 'LD-' + Math.random().toString(36).slice(2, 10);
+    form.querySelector('[name="lead_id"]').value = leadId;
+
     const src = new FormData(form);
     const body = new URLSearchParams();
     body.append('client', CLIENT);
     Object.keys(GFORM.map).forEach((name) => {
       body.append(name, src.get(name) || '');
     });
+    body.append('khu_vuc', src.get('khu_vuc') || '');
+    body.append('lead_id', leadId);
 
     // Gửi nền (keepalive) — phản hồi là opaque (no-cors) nên không cần chờ; hiện lời cảm ơn ngay.
     fetch(GFORM.action, { method: 'POST', mode: 'no-cors', body: body, keepalive: true })
       .catch(() => {
         alert('Gửi không thành công, vui lòng nhắn Zalo Ms. Uyên: zalo.me/0869688153');
       });
+    gtag('event', 'generate_lead', {
+      course: src.get('khoa_hoc') || '',
+      schedule: src.get('lich_hoc') || '',
+      khu_vuc: src.get('khu_vuc') || '',
+      lead_id: leadId
+    });
     form.style.display = 'none';
     thankyou.style.display = 'block';
     thankyou.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // ---- GA event hooks ----
+  let formStarted = false;
+  form.addEventListener('focusin', () => {
+    if (!formStarted) { formStarted = true; gtag('event', 'form_start', { form_id: 'dang-ky' }); }
+  });
+  document.getElementById('course').addEventListener('change', (e) => {
+    gtag('event', 'course_interest', { course: e.target.value });
+  });
+  document.querySelectorAll('a[href*="zalo.me"]').forEach((a) => {
+    a.addEventListener('click', () => {
+      let placement = 'other';
+      if (a.classList.contains('zalo-float')) placement = 'float';
+      else if (a.closest('#thankyou')) placement = 'thankyou';
+      else if (a.closest('form') || a.closest('.form-wrap')) placement = 'form';
+      else if (a.closest('footer')) placement = 'footer';
+      gtag('event', 'zalo_click', { placement: placement });
+    });
   });
 </script>
 
